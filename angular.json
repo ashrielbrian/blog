@@ -118,8 +118,15 @@
               "devServerTarget": "visualizations:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "https://ashrielbrian.github.io/visualizations/"
+          }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "visualizations"
 }
