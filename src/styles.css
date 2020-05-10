@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+h1, h2, h3, h4, h5 {
+    font-family: 'Playfair Display', serif;
+    
+}
+
+
+
+h2, h3{
+    font-weight: 500;
+    
+}
+
+h4, h5 {
+    font-weight: 400;
+}
+
+
+body {
+    font-family: 'Lato', sans-serif;
+    padding: 2rem 6rem 5rem 6rem;
+}
