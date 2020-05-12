@@ -20,7 +20,8 @@ import { RouterModule } from '@angular/router';
     ProjectsModule,
     RouterModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

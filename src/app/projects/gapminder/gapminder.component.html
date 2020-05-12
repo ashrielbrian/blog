@@ -1,7 +1,28 @@
 
-<h1>Gapminder works!</h1>
-<p>12th March 2020</p>
-<hr>
+<h1 id="project-title"><u>1800 - 2014: Life Expectancy & GDP per Capita growth</u></h1>
+
 <div class="container" id="project-container">
-    <app-chart [data]="chartData"></app-chart>
+    <div class="container" id="button-container">
+        <button class="btn btn-outline-success" id="play-btn" *ngIf="!isContinue; else pause" (click)="start()">Play</button>
+
+        <ng-template #pause>
+            <button class="btn btn-outline-success" id="pause-btn" (click)="wait()">Pause</button>
+        </ng-template>
+        <button class="btn btn-outline-danger" id="reset-btn" (click)="reset()">Reset</button>
+        
+        <form [formGroup]="gapminderForm">
+            <input type="range" name="year-slider" id="year-slider" min="1800" max="2014" step="1" formControlName="sliderCtrl" (change)="slider($event)">
+            <select class="form-control" name="continent-selector" id="continent-selector" formControlName="dropdownCtrl">
+                <option *ngFor="let continent of continents" 
+                    [ngValue]="continent">
+                    {{continent}}</option>
+            </select>
+        </form>
+    </div>
+    
+    <app-chart [transitionTime]="transitionTime"></app-chart>
+    
+</div>
+<div class="footer">
+    <p>Source: <a href="https://www.gapminder.org/data/">Gapminder Data</a></p>
 </div>

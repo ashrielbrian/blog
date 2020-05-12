@@ -1,0 +1,17 @@
+#project-container {
+    padding-top:25px;
+}
+
+#project-title {
+    margin-top: 9px;
+}
+
+#button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.btn {
+    margin-right: 10px;
+}
