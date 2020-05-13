@@ -3,15 +3,13 @@ h1#main-title {
     margin-bottom: 20px;
     font-weight: 700;
     font-size: 10em;
-    
-    
 }
 
 /* START: underline transition animation */
 span#main-title-span {
     position: relative;
-
 }
+
 span#main-title-span::before{
     content: '';
     position: absolute;
@@ -58,5 +56,14 @@ span#main-title-span:hover::before{
     #main {
         flex-direction: column;
     }
+}
 
+
+@media only screen and (min-device-width: 300px) and (max-device-width: 480px) {
+    h1#main-title {
+        margin-top:10px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        font-size: 5rem;
+    }
 }

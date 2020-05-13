@@ -75,7 +75,9 @@ export class ChartComponent implements OnInit, OnDestroy{
   initialiseChartArea() {
     // sets up the chart area to be drawn on
     this.svg = d3.select(this.hostElement).append('svg')
-      .attr('height', this.height).attr('width', this.width);
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", `0 0 ${this.width} ${this.height}`)
+      .classed("svg-content-responsive", true);;    // these lines are needed to make the svg responsive
     this.chart = this.svg.append('g')
       .attr('id', 'chart-area')
       .attr('height', this.chartHeight).attr('width', this.chartWidth)

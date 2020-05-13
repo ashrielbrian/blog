@@ -30,3 +30,10 @@ li {
         
     }
 }
+
+@media (max-width: 400px) {
+    .content-wrapper {
+        height: 10vh;
+        
+    }
+}

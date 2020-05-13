@@ -11,12 +11,21 @@
         <button class="btn btn-outline-danger" id="reset-btn" (click)="reset()">Reset</button>
         
         <form [formGroup]="gapminderForm">
-            <input type="range" name="year-slider" id="year-slider" min="1800" max="2014" step="1" formControlName="sliderCtrl" (change)="slider($event)">
-            <select class="form-control" name="continent-selector" id="continent-selector" formControlName="dropdownCtrl">
-                <option *ngFor="let continent of continents" 
-                    [ngValue]="continent">
-                    {{continent}}</option>
-            </select>
+            <div class="form-group">
+                <div id="slider">
+                    <input type="range" name="year-slider" id="year-slider" 
+                    min="1800" max="2014" step="1" 
+                    formControlName="sliderCtrl" 
+                    (change)="slider($event)">
+                </div>
+                
+                <select class="form-control" name="continent-selector" id="continent-selector" formControlName="dropdownCtrl">
+                    <option *ngFor="let continent of continents" 
+                        [ngValue]="continent">
+                        {{continent}}</option>
+                </select>
+            </div>
+            
         </form>
     </div>
     

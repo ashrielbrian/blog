@@ -14,7 +14,8 @@ h4, h5 {
 
 body {
     font-family: 'Lato', sans-serif;
-    padding: 2rem 6rem 5rem 6rem;
+    margin-bottom: 25px;
+    
 }
 
 
@@ -41,3 +42,14 @@ a:hover::before {
     transform-origin: bottom left;
 }
 /* END: underline transition animation */
+
+@media only screen and (min-device-width: 300px) and (max-device-width: 480px) {
+
+    h1#project-title {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 0.85rem;
+    }
+}
