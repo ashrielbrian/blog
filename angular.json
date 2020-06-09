@@ -121,7 +121,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "https://ashrielbrian.github.io/visualizations/"
+            "baseHref": "http://ashrielbrian.com/visualizations/"
           }
         }
       }
