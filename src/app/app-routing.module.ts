@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GapminderComponent } from './projects/gapminder/gapminder.component';
-import { SecondProjComponent } from './projects/second-proj/second-proj.component';
+import { SortingVisualizerComponent } from './projects/sorting-visualizer/sorting-visualizer.component';
 
 
 const routes: Routes = [
@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'gapminder', component: GapminderComponent,
   },
   {
-    path: 'second-proj', component: SecondProjComponent,
+    path: 'sort', component: SortingVisualizerComponent,
   }
 ];
 

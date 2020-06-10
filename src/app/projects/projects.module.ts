@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { GapminderComponent } from './gapminder/gapminder.component';
-import { SecondProjComponent } from './second-proj/second-proj.component';
 import { ChartComponent } from './gapminder/chart.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { SortingVisualizerComponent } from './sorting-visualizer/sorting-visualizer.component';
+import { SortChartComponent } from './sorting-visualizer/sort-chart.component';
 
 
 @NgModule({
     declarations: [
         GapminderComponent,
-        SecondProjComponent,
-        ChartComponent
+        ChartComponent,
+        SortingVisualizerComponent,
+        SortChartComponent
     ],
     imports: [
-        BrowserModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule
