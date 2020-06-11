@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SortingSerivce } from './sorting.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sorting-visualizer',
@@ -10,14 +11,14 @@ export class SortingVisualizerComponent implements OnInit {
 
   constructor(private sortService: SortingSerivce) { }
 
-  ngOnInit(): void {
-  }
+  isAnimating$: Observable<boolean> = this.sortService.getAnimation$();
+  ngOnInit(): void {}
 
   bubbleSort() {
     this.sortService.callBubbleSort();
   }
 
   mergeSort() {
-    this.sortService.callMergeSort();
+    this.sortService.callIterativeMergeSort();
   }
 }

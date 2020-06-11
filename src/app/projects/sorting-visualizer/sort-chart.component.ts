@@ -19,7 +19,7 @@ export class SortChartComponent implements OnInit, OnDestroy{
         this._subs.add(this.array$.subscribe(arr => {
             if (arr) {
                 this.arr = arr;
-                this.draw();
+                this.draw(arr);
             }
         }));
         this._subs.add(this.actions$.subscribe(acts => {
@@ -27,6 +27,7 @@ export class SortChartComponent implements OnInit, OnDestroy{
                 this.animate(acts);
             }
         }));
+        this._subs.add(this.isAnimating$.subscribe(is => console.log(is)));
     }
 
     ngOnDestroy() {
@@ -34,6 +35,7 @@ export class SortChartComponent implements OnInit, OnDestroy{
     }
 
     private _subs: Subscription = new Subscription();
+    isAnimating$: Observable<boolean> = this.sortService.getAnimation$();
     array$: Observable<number[]> = this.sortService.getArray$();
     actions$: Observable<any[]> = this.sortService.getActions$();
     actions;
@@ -77,11 +79,11 @@ export class SortChartComponent implements OnInit, OnDestroy{
         this.colorScale = d3.scaleQuantize<string>().domain([0, this.arr.length]).range(["rgb(222,235,247)","rgb(198,219,239)","rgb(158,202,225)","rgb(107,174,214)","rgb(66,146,198)","rgb(33,113,181)","rgb(8,81,156)","rgb(8,48,107)"])
     }
 
-    draw() {
+    draw(arr: number[]) {
         this.initialiseScales();
-        if (this.arr) {
+        if (arr?.length > 0) {
             this.rectWidth = Math.floor(this.chartWidth / this.arr.length);
-            var rects = this.chart.selectAll('rect').data(this.arr);
+            var rects = this.chart.selectAll('rect').data(arr, Number);
     
             rects.enter().append('rect')
                 .attr('fill', d => this.colorScale(d))
@@ -95,9 +97,9 @@ export class SortChartComponent implements OnInit, OnDestroy{
     }
 
     animate(actions:any[]) {
-        
         let sortingArr = [...this.arr];
-        let duration = 5;
+        let duration = 20;
+        this.sortService.startAnimation();
 
         let t = setInterval(() => {
             let act = actions.pop();
@@ -105,21 +107,28 @@ export class SortChartComponent implements OnInit, OnDestroy{
                 switch (act.type) {
                     case 'swap':
                         [sortingArr[act.i], sortingArr[act.j]] = [sortingArr[act.j], sortingArr[act.i]];
-                        slide(sortingArr[act.i], act.i);
+                        slide(sortingArr[act.i], act.i); // moves the rect to its new location
                         slide(sortingArr[act.j], act.j);
-
+                        break;
+                    case 'snapshot':
+                        // the second arg for data "Number", is important in order for d3 to identify the rect DOM based on the number
+                        // value found in the array. E.g. number 3 corresponds to THIS particular rect; 9 corresponds to THAT rect.
+                        var rects = this.chart.selectAll('rect').data(act.arr, Number);
+                        rects.transition().duration(duration)
+                            .attr('x', (_,i) => this.xScale(i));
+                        break;
                 }
             } else {
+                this.sortService.stopAnimation();
                 clearInterval(t);
             }
             
         }, duration);
 
         var slide = (d, i) => {
-            d3.select('#rect' + d).transition().duration(duration)
-                .attr('x', d => this.xScale(i))
+            d3.select('#rect' + d).transition().duration(5)
+                .attr('x', this.xScale(i));
         }
-
     }
 
 

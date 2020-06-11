@@ -1,7 +1,7 @@
 <h1 id="project-title"><u>Sorting Visualizer</u></h1>
 
 <div class="container">
-    <button class="btn btn-primary btn-sm mr-2" (click)="bubbleSort()">Bubble Sort</button>
-    <button class="btn btn-primary btn-sm" (click)="mergeSort()">Merge Sort</button>
+    <button class="btn btn-outline-primary btn-sm mr-2" (click)="bubbleSort()" [disabled]="(isAnimating$ | async)">Bubble Sort</button>
+    <button class="btn btn-outline-primary btn-sm" (click)="mergeSort()" [disabled]="(isAnimating$ | async)">Merge Sort</button>
     <app-sort-chart></app-sort-chart>
 </div>

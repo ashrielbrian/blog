@@ -37,7 +37,9 @@ export class DataService {
     constructor(){}
     /**
     *   Controls and tracks the current state of the dataset and UI.
+    *   TODO: Use _isLoading$ to show up a spinner while loading up the JSON file
     */
+    private _isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
     private isAnimating: boolean = false; // tracks the state of the chart, whether it is currently in transition
     private isAnimating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAnimating);
     private time: number = 0;           // tracks the current year of the dataset, in terms of index
@@ -49,6 +51,9 @@ export class DataService {
     private dataLength: number; // the number of years in the dataset
     public get continents(): Continent[] { return [Continent.All, Continent.Europe, Continent.Asia, Continent.Americas, Continent.Africa] };
 
+    public getLoading$(): Observable<boolean> {
+        return this._isLoading$.asObservable();
+    }
     public getIsAnimating$(): Observable<boolean> {
         return this.isAnimating$.asObservable();
     }
@@ -97,9 +102,13 @@ export class DataService {
         /**
          * Gets the gapminder data.
          */
+
         let fetched: any[] = await d3.json('https://raw.githubusercontent.com/adamjanes/udemy-d3/master/05/5.10.0/data/data.json');
+    
+    
         this.data = fetched.map(yearData => {
             let countriesData = this._formatData(yearData);
+            this._isLoading$.next(false);
             return new YearData(countriesData, yearData.year);
         });
         this.dataLength = fetched.length;
@@ -107,6 +116,7 @@ export class DataService {
         this.currentYearData = this.data[this.time];
         this.currentYearData$.next(this.currentYearData);
         this.data$.next(this.data);
+        
     }
 
     private _formatData(yearData) {

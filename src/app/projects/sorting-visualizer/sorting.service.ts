@@ -1,10 +1,6 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, merge } from 'rxjs';
 import * as d3 from 'd3';
-
-interface Action {
-
-}
 
 @Injectable({
     providedIn: 'root'
@@ -13,11 +9,24 @@ interface Action {
 export class SortingSerivce {
     constructor() {}
 
-    arrLength: number = 100;
+    arrLength: number = 200;
     array: number[];
     
-    _actionsChanges$: Subject<any[]> = new Subject<any[]>();
-    _arrayChanges$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(this.generateRandomisedArray(this.arrLength));
+    private _isAnimating$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private _actionsChanges$: Subject<any[]> = new Subject<any[]>();
+    private _arrayChanges$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(this.generateRandomisedArray(this.arrLength));
+
+    startAnimation() {
+        this._isAnimating$.next(true);
+    }
+
+    stopAnimation() {
+        this._isAnimating$.next(false);
+    }
+
+    getAnimation$(): Observable<boolean> {
+        return this._isAnimating$.asObservable();
+    }
 
     getActions$(): Observable<any[]> {
         return this._actionsChanges$.asObservable();
@@ -54,33 +63,56 @@ export class SortingSerivce {
         this._actionsChanges$.next(actions);
     }
 
-    callMergeSort() {
-        let arr = [... this._arrayChanges$.getValue()];
-        let actions = [];
-        
-        var mergeSort = (arr: number[]) => {
-            if (arr.length <= 1) return arr;
-
-            let mid = Math.floor(arr.length / 2);
-            let left = mergeSort(arr.slice(0, mid));
-            let right = mergeSort(arr.slice(mid));
-
-
-            return merge(left, right);
+    callIterativeMergeSort() {
+        /* 
+            adapted from Mike Bostock: http://bl.ocks.org/mbostock/1243323
+        */
+        let array: number[] = [...this._arrayChanges$.getValue()];
+        let actions = [], i, j, m = 1;
+  
+        // double the size each pass
+        while (m < array.length) {
+            i = 0, j = 0; 
+            while (i < array.length) {
+                j += merge(i, i += m, i += m)
+            };
+            if (j) {
+                // each action tracks the current array snapshop after each merge of the arrays is made
+                actions.push({
+                    type: 'snapshot',
+                    arr: array.slice()
+                });
+            } else m <<= 1;
         }
-
-        var merge = (arrA: number[], arrB: number[]) => {
-            // arrA & arrB are both ordered arrays
-            let merged = [];
-            while (arrA.length !== 0 && arrB.length !== 0) {
-                if (arrA[0] < arrB[0]) merged.push(arrA.shift());
-                else merged.push(arrB.shift());
+    
+        // Merges two adjacent sorted arrays in-place.
+        function merge(start, middle, end) {
+            middle = Math.min(array.length, middle);
+            end = Math.min(array.length, end);
+            for (; start < middle; start++) {
+                if (array[start] > array[middle]) {
+                    var v = array[start];
+                    array[start] = array[middle];
+                    insert(middle, end, v);
+                    return true;
+                }
             }
-         
-            return arrA.length !== 0 ? merged.concat(arrA) : merged.concat(arrB);
+                return false;
         }
-        let sorted =  mergeSort(arr);
-        
+    
+        // Inserts the value v into the subarray specified by start and end.
+        function insert(start, end, v) {
+            while (start + 1 < end && array[start + 1] < v) {
+                var tmp = array[start];
+                array[start] = array[start + 1];
+                array[start + 1] = tmp;
+                start++;
+            }
+            array[start] = v;
+        }
+        actions.reverse();
+        this._actionsChanges$.next(actions);
+
     }
 }
 
