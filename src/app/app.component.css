@@ -45,7 +45,7 @@ span#main-title-span:hover::before{
     flex: 4;
     padding-left: 20px;
     transition: box-shadow 0.5s linear ;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 #body:hover {

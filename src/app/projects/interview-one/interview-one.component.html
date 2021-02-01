@@ -1,0 +1,35 @@
+<h1><u>Problems from an Interview</u></h1>
+
+<br>
+<h4>1. Approximating a biased coin as fair</h4>
+<p>
+    First, given a biased coin, come up with a solution to approximate a fair coin using the biased coin.
+</p>
+<p>
+    For e.g., for a coin with 0.7 chance of a heads, the solution to this would be to flip the coin twice. And if the flips result in two heads, we accept that as a single Heads as:
+</p>
+<p>
+    <code>P(HH) = 0.7 * 0.7 = 0.49</code>
+</p>
+<p>
+    and we use all the other permutations as a proxy for the Tails approximation:
+</p>
+<p>
+    <code>P(HT) + P(TH) + P(TT) = 2 * (0.3 * 0.7) + (0.3 * 0.3) = 0.51</code>
+</p>
+
+<hr>
+<h4>2. Internationalization > i18n</h4>
+<p>
+    Second, given a string, abbreviate words by removing all characters except the first and last characters, and replacing them with its count.
+</p>
+<iframe #abbreviateiFrame frameborder="0"  type="text/javascript"></iframe>
+
+<hr>
+<h4>3. Top-k largest values</h4>
+<p>
+    Third, given a stream of values, get the top-k largest numbers.
+</p>
+<iframe #topkiFrame frameborder="0" scrolling="no" type="text/javascript"></iframe>
+
+
